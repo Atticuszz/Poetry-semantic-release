@@ -1,0 +1,45 @@
+name: 'Python Package Release'
+description: 'Automates bumping version, creating changelog, publishing to PyPI, and releasing on GitHub.'
+inputs:
+  github_token:
+    description: 'GitHub token for authentication.'
+    required: true
+  atticus_pat:
+    description: 'Personal Access Token for checking out the repository.'
+    required: true
+  pypi_token:
+    description: 'PyPI token for publishing the package.'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Clone Repository
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.ref }}
+        fetch-depth: 0
+        token: ${{ inputs.atticus_pat }}
+        
+    # auto calculate the next version number
+    - name: Python Semantic Release
+      uses: python-semantic-release/python-semantic-release@master
+      with:
+        github_token: ${{ inputs.github_token }}
+        
+    # use poetry to publish pypi package
+    - name: Set up Poetry
+      uses: abatilo/actions-poetry@v2.4.0
+      with:
+        poetry-version: '1.7.1'
+
+    - name: Configure PyPI token and Publish to PyPI
+      run: |
+        poetry config pypi-token.pypi ${{ inputs.pypi_token }}
+        poetry publish
+        
+    # upload package distributions to GitHub Releases
+    - name: Publish package distributions to GitHub Releases
+      uses: python-semantic-release/upload-to-gh-release@main
+      if: ${{ steps.release.outputs.released == 'true' }}
+      with:
+        github_token: ${{ inputs.github_token }}
