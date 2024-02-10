@@ -29,6 +29,7 @@ runs:
       run: |
         poetry config pypi-token.pypi ${{ inputs.pypi_token }}
         poetry publish
+      shell: bash
         
     # upload package distributions to GitHub Releases
     - name: Publish package distributions to GitHub Releases
