@@ -7,7 +7,7 @@ inputs:
   github_token:
     description: 'GitHub token for authentication.'
     required: true
-  atticus_pat:
+  repo_pat:
     description: 'Personal Access Token for checking out the repository.'
     required: true
   pypi_token:
@@ -21,7 +21,7 @@ runs:
       with:
         ref: ${{ github.ref }}
         fetch-depth: 0
-        token: ${{ inputs.atticus_pat }}
+        token: ${{ inputs.repo_pat }}
         
     # auto calculate the next version number
     - name: Python Semantic Release
