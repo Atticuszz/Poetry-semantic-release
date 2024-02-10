@@ -31,7 +31,7 @@ runs:
         
     # use poetry to publish pypi package
     - name: Set up Poetry
-      uses: abatilo/actions-poetry@v2.4.0
+      uses: abatilo/actions-poetry@v3.0.0
       with:
         poetry-version: '1.7.1'
 
