@@ -1,6 +1,8 @@
 name: 'Python Package Release'
 description: 'Automates bumping version, creating changelog, publishing to PyPI, and releasing on GitHub.'
-icon: upload-cloud
+branding:
+  icon: 'upload-cloud'
+  color: 'green' 
 inputs:
   github_token:
     description: 'GitHub token for authentication.'
